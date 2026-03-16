@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import {
@@ -60,9 +60,10 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
           <span>Logout</span>
         </button>
         <div className="text-center text-gray-400 text-xs">
-          � {new Date().getFullYear()} LKD Classes
+          © {new Date().getFullYear()} LKD Classes
         </div>
       </div>
     </motion.aside>
   );
 }
+
