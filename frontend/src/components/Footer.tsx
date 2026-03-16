@@ -7,7 +7,7 @@ export default function Footer() {
           {/* About */}
           <div>
             <h3 className="text-xl font-bold mb-4">LKD Classes</h3>
-            <p className="text-base">Empowering students with Science, Math, English & more. Located in Sitalpur, Saran.</p>
+            <p className="text-base">Empowering students with Science, Math, English & more in Sitalpur, Saran, Bihar.</p>
           </div>
 
           {/* Quick Links */}
@@ -16,8 +16,13 @@ export default function Footer() {
             <ul className="text-base">
               <li><a href="/about" className="hover:text-yellow-400 transition">About</a></li>
               <li><a href="/courses" className="hover:text-yellow-400 transition">Courses</a></li>
-              <li><a href="/gallery" className="hover:text-yellow-400 transition">Gallery</a></li>
+              <li><a href="/contact" className="hover:text-yellow-400 transition">Contact</a></li>
+              {/* <li><a href="/gallery" className="hover:text-yellow-400 transition">Gallery</a></li> */}
               <li><a href="/register" className="hover:text-yellow-400 transition">Enroll</a></li>
+              <li><a href="/result" className="hover:text-yellow-400 transition">Result</a></li>
+              <li><a href="/privacy-policy" className="hover:text-yellow-400 transition">Privacy Policy</a></li>
+              <li><a href="/terms-and-conditions" className="hover:text-yellow-400 transition">Terms & Conditions</a></li>
+              <li><a href="/refund-cancellation-policy" className="hover:text-yellow-400 transition">Refund Policy</a></li>
             </ul>
           </div>
 
@@ -25,8 +30,8 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Us</h3>
             <p className="text-base">Phone: +918002271522</p>
-            <p className="text-base">Email: lkdclasses@gmail.com</p>
-            <p className="text-base">Address:Parsa Roard, Sitalpur, Saran, Bihar</p>
+            <p className="text-base">Email: lkdclasses2007@gmail.com</p>
+            <p className="text-base">Address: Parsa Road, Sitalpur, Saran, Bihar, India</p>
           </div>
         </div>
 
@@ -34,8 +39,15 @@ export default function Footer() {
         <div className="md:hidden text-center">
           <h3 className="text-lg font-bold mb-2">Contact Us</h3>
           <p className="text-sm">Phone: +918002271522</p>
-          <p className="text-sm">Email: lkdclasses@gmail.com</p>
-          <p className="text-sm">Address: Parsa Road, Sitalpur, Saran, Bihar</p>
+          <p className="text-sm">Email: lkdclasses2007@gmail.com</p>
+          <p className="text-sm">Address: Parsa Road, Sitalpur, Saran, Bihar, India</p>
+          <div className="mt-2 text-xs">
+            <a href="/about" className="underline mr-2">About</a>
+            <a href="/privacy-policy" className="underline mr-2">Privacy</a>
+            <a href="/terms-and-conditions" className="underline mr-2">Terms</a>
+            <a href="/refund-cancellation-policy" className="underline mr-2">Refund</a>
+            <a href="/contact" className="underline">Contact</a>
+          </div>
         </div>
 
         {/* Copyright */}
@@ -46,4 +58,6 @@ export default function Footer() {
     </footer>
   );
 }
+
+
 

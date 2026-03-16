@@ -1,21 +1,25 @@
 "use client";
 
-const notifications = [
-  { title: "Exam Schedule Released", date: "10 Jan", desc: "Check your class exam schedule." },
-  { title: "New YouTube Playlist", date: "12 Jan", desc: "Updated playlist for class 6 to 8." },
-  { title: "Fee Reminder", date: "15 Jan", desc: "February fee due soon." },
-];
+import { useEffect, useState } from "react";
+import { noticeService, type NoticeItem } from "@/services/noticeService";
 
 export default function NotificationsSection() {
+  const [notifications, setNotifications] = useState<NoticeItem[]>([]);
+
+  useEffect(() => {
+    void noticeService.getLatest(5).then(setNotifications).catch(() => setNotifications([]));
+  }, []);
+
   return (
     <div>
       <h2 className="text-3xl font-bold text-indigo-700 mb-4">Notifications</h2>
       <div className="space-y-4">
-        {notifications.map((note, idx) => (
-          <div key={idx} className="bg-white rounded-2xl shadow p-4 hover:shadow-xl transition">
+        {notifications.length === 0 && <p className="text-gray-500">No notifications available.</p>}
+        {notifications.map((note) => (
+          <div key={note.id} className="bg-white rounded-2xl shadow p-4 hover:shadow-xl transition">
             <h3 className="font-semibold text-lg">{note.title}</h3>
-            <p className="text-gray-600">{note.date}</p>
-            <p className="text-gray-700 mt-1">{note.desc}</p>
+            <p className="text-gray-600">{new Date(note.createdAt).toLocaleDateString()}</p>
+            <p className="text-gray-700 mt-1">{note.message}</p>
           </div>
         ))}
       </div>

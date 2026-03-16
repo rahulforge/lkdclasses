@@ -117,7 +117,7 @@ export default function FounderPage() {
             { value: "10+", label: "Years of Excellence", icon: "🏆" },
             { value: "5000+", label: "Students Mentored", icon: "🎓" },
             { value: "100+", label: "Top Rankers", icon: "📘" },
-            { value: "50+", label: "Dedicated Faculty", icon: "👨‍🏫" },
+            { value: "5+", label: "Dedicated Faculty", icon: "👨‍🏫" },
           ].map((item, index) => (
             <div
               key={index}

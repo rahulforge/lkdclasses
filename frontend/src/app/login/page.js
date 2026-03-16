@@ -1,34 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast, Toaster } from "react-hot-toast";
-import { setUser } from "@/utils/auth";
+import { authService } from "@/services/authService";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const handleLogin = () => {
-    // Admin
-    if (username === "admin" && password === "admin@lkd") {
-      setUser({ role: "admin" });
-      toast.success("Welcome Admin!");
-      router.push("/admin");
-      return;
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      const user = await authService.login(username, password);
+      toast.success(`Welcome ${user.name || "User"}!`);
+      const nextParam = searchParams.get("next") || "";
+      const nextPath = nextParam.startsWith("/") ? nextParam : "";
+      if (nextPath && user.role !== "admin") {
+        router.replace(nextPath);
+      } else {
+        router.replace(user.role === "admin" ? "/admin" : "/student-portal");
+      }
+    } catch (error) {
+      toast.error(error?.message || "Invalid login credentials");
+    } finally {
+      setLoading(false);
     }
-
-    // Student
-    if (username === "12100" && password === "lkd@lkdclasses") {
-      setUser({ role: "student", roll: "12100", name: "Test Student" });
-      toast.success("Login Successful!");
-      router.push("/student-portal");
-      return;
-    }
-
-    toast.error("Invalid Roll Number or Password!");
   };
 
   return (
@@ -40,7 +41,7 @@ export default function Login() {
         <div className="flex flex-col gap-4">
           <input
             type="text"
-            placeholder="Roll Number / Username"
+            placeholder="Phone / Email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -65,15 +66,12 @@ export default function Login() {
 
           <button
             onClick={handleLogin}
-            className="bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition"
+            disabled={loading}
+            className="bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition disabled:opacity-60"
           >
-            Login
+            {loading ? "Please wait..." : "Login"}
           </button>
         </div>
-
-        <p className="mt-4 text-center text-gray-500 text-sm">
-          Student: <b>12100 / lkd@lkdclasses</b> | Admin: <b>admin / admin@lkd</b>
-        </p>
       </div>
     </div>
   );

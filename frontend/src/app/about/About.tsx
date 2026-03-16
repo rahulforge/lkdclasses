@@ -137,13 +137,13 @@ export default function AboutPage() {
           <div className="text-center mb-12 fade-up">
             <h2 className="text-4xl font-bold text-indigo-700 mb-3">Visit LKD Classes</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              We’re located in the heart of <b>Sitalpur, Saran</b> — a place where excellence meets discipline.
+              We’re located in the heart of <b>Sitalpur, Saran, Bihar</b> — a place where excellence meets discipline.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="bg-white rounded-2xl shadow-lg p-8 border border-indigo-100 text-left fade-up">
               <h3 className="text-2xl font-semibold text-indigo-600 mb-4">Contact Information</h3>
-              <p className="text-gray-700 mb-3"><strong>Address:</strong> Parsa Road, Sitalpur, Saran, Bihar</p>
+              <p className="text-gray-700 mb-3"><strong>Address:</strong> Parsa Road, Sitalpur, Saran, Bihar, India</p>
               <p className="text-gray-700 mb-3"><strong>Phone:</strong> +918002271522</p>
               <p className="text-gray-700 mb-3"><strong>Email:</strong> lkdclasses@gmail.com</p>
               {/* Social Media */}
@@ -201,3 +201,6 @@ export default function AboutPage() {
     </>
   );
 }
+
+
+

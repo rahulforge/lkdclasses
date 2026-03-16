@@ -5,10 +5,7 @@ import {
   HiOutlineUser,
   HiOutlineDocumentReport,
   HiOutlineCreditCard,
-  HiOutlineBell,
-  HiOutlineVideoCamera,
-  HiOutlineAcademicCap,
-  HiOutlineBadgeCheck,
+  HiOutlineLogout,
 } from "react-icons/hi";
 
 interface SidebarProps {
@@ -19,12 +16,8 @@ interface SidebarProps {
 export default function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
   const menuItems = [
     { key: "profile", label: "Profile", icon: <HiOutlineUser /> },
-    { key: "results", label: "Results", icon: <HiOutlineDocumentReport /> },
-    { key: "certificates", label: "Certificates", icon: <HiOutlineBadgeCheck /> },
     { key: "payments", label: "Payments", icon: <HiOutlineCreditCard /> },
-    { key: "notifications", label: "Notifications", icon: <HiOutlineBell /> },
-    { key: "events", label: "Events", icon: <HiOutlineAcademicCap /> },
-    { key: "youtube", label: "YouTube", icon: <HiOutlineVideoCamera /> },
+    { key: "results", label: "Results", icon: <HiOutlineDocumentReport /> },
   ];
 
   return (
@@ -56,8 +49,19 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
         ))}
       </nav>
 
-      <div className="border-t mx-6 mt-4 pt-4 text-center text-gray-400 text-xs">
-        Â© {new Date().getFullYear()} LKD Classes
+      <div className="border-t mx-6 mt-4 pt-4 space-y-3">
+        <button
+          onClick={() => setActiveSection("logout")}
+          className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50"
+        >
+          <span className="text-lg">
+            <HiOutlineLogout />
+          </span>
+          <span>Logout</span>
+        </button>
+        <div className="text-center text-gray-400 text-xs">
+          © {new Date().getFullYear()} LKD Classes
+        </div>
       </div>
     </motion.aside>
   );
