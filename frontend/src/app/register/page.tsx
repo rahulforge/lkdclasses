@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,7 +15,7 @@ import {
 const APP_ACCESS_FEE = Math.max(0, Number(process.env.NEXT_PUBLIC_APP_ACCESS_FEE ?? 50));
 const PENDING_REG_KEY = "lkd_pending_registration_v1";
 
-export default function RegistrationPage() {
+function RegistrationPageContent() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -337,5 +337,13 @@ export default function RegistrationPage() {
 
       <Footer />
     </>
+  );
+}
+
+export default function RegistrationPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <RegistrationPageContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -20,7 +20,7 @@ type PendingRegistration = {
   registrationFee?: number;
 };
 
-export default function RegisterFinalizePage() {
+function RegisterFinalizePageContent() {
   const router = useRouter();
   const params = useSearchParams();
   const [statusText, setStatusText] = useState("Finalizing your registration...");
@@ -96,5 +96,13 @@ export default function RegisterFinalizePage() {
       </section>
       <Footer />
     </>
+  );
+}
+
+export default function RegisterFinalizePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <RegisterFinalizePageContent />
+    </Suspense>
   );
 }

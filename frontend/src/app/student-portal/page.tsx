@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import Sidebar from "./components/sidebar";
@@ -9,7 +9,7 @@ import ResultsSection from "./components/ResultsSection";
 import PaymentsSection from "./components/PaymentsSection";
 import { authService } from "@/services/authService";
 
-export default function StudentDashboard() {
+function StudentDashboardContent() {
   const { user, loading } = useAuth("student");
   const [activeSection, setActiveSection] = useState("profile");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -88,5 +88,13 @@ export default function StudentDashboard() {
         {renderSection()}
       </main>
     </div>
+  );
+}
+
+export default function StudentDashboard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <StudentDashboardContent />
+    </Suspense>
   );
 }
