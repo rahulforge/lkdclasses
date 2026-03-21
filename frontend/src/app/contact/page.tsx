@@ -1,4 +1,35 @@
+import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lkdclasses.com";
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "LKD Classes";
+const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO || "/logo.png";
+
+export const metadata: Metadata = {
+  title: `Contact | ${siteName}`,
+  description:
+    "Contact LKD Classes for admissions, fee payments, and course information in Sitalpur, Saran, Bihar.",
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    title: `Contact | ${siteName}`,
+    description:
+      "Contact LKD Classes for admissions, fee payments, and course information in Sitalpur, Saran, Bihar.",
+    url: `${siteUrl}/contact`,
+    siteName,
+    images: [siteLogo],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Contact | ${siteName}`,
+    description:
+      "Contact LKD Classes for admissions, fee payments, and course information in Sitalpur, Saran, Bihar.",
+    images: [siteLogo],
+  },
+};
 
 export default function ContactPage() {
   return (
@@ -27,5 +58,4 @@ export default function ContactPage() {
     </>
   );
 }
-
 

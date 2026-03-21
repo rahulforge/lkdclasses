@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { callCreatePaymentOrder } from "../_edge";
 import {
-  createRazorpayOrder,
   monthKey,
   getPlanMap,
   getPromoDiscount,
-  getRazorpayKeyId,
   normalizePhone,
   sbInsert,
   sbSelect,
@@ -196,9 +195,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unable to create payment" }, { status: 500 });
     }
 
-    const order = await createRazorpayOrder({
+    const edgeOrder = await callCreatePaymentOrder({
+      order_only: true,
       amountInRupees: amount,
       receipt: `pay_${payment.id}`,
+      user_id: String(profile.id),
       notes: {
         payment_id: String(payment.id),
         user_id: String(profile.id),
@@ -212,16 +213,31 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    const orderId = String(
+      edgeOrder.orderId ??
+        edgeOrder.order_id ??
+        edgeOrder.id ??
+        edgeOrder.razorpay_order_id ??
+        ""
+    ).trim();
+    if (!orderId) {
+      return NextResponse.json({ error: "Invalid order response from edge function" }, { status: 500 });
+    }
+
     await sbUpdate("payments", `id=eq.${encodeURIComponent(String(payment.id))}`, {
       provider: "razorpay",
-      provider_order_id: order.id,
+      provider_order_id: orderId,
     });
 
+    const keyId = String(
+      edgeOrder.keyId ?? process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? ""
+    ).trim();
+
     return NextResponse.json({
-      keyId: getRazorpayKeyId(),
-      orderId: order.id,
+      keyId,
+      orderId,
       amount,
-      currency: "INR",
+      currency: String(edgeOrder.currency ?? "INR"),
       paymentId: String(payment.id),
       userId: String(profile.id),
       phone,

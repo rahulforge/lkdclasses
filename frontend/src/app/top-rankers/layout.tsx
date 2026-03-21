@@ -5,15 +5,15 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lkdclasses.com";
 const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO || "/logo.png";
 
 export const metadata: Metadata = {
-  title: `Results | ${siteName}`,
-  description: "Check LKD Classes results using mobile number and password.",
+  title: `Top Rankers | ${siteName}`,
+  description: "Meet the top achievers and rankers from LKD Classes.",
   alternates: {
-    canonical: "/result",
+    canonical: "/top-rankers",
   },
   openGraph: {
-    title: `Results | ${siteName}`,
-    description: "Check LKD Classes results using mobile number and password.",
-    url: `${siteUrl}/result`,
+    title: `Top Rankers | ${siteName}`,
+    description: "Meet the top achievers and rankers from LKD Classes.",
+    url: `${siteUrl}/top-rankers`,
     siteName,
     images: [siteLogo],
     locale: "en_IN",
@@ -21,12 +21,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `Results | ${siteName}`,
-    description: "Check LKD Classes results using mobile number and password.",
+    title: `Top Rankers | ${siteName}`,
+    description: "Meet the top achievers and rankers from LKD Classes.",
     images: [siteLogo],
   },
 };
 
-export default function ResultLayout({ children }: { children: React.ReactNode }) {
+export default function TopRankersLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

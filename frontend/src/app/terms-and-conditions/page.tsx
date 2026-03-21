@@ -1,4 +1,32 @@
+﻿import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "LKD Classes";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lkdclasses.com";
+const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO || "/logo.png";
+
+export const metadata: Metadata = {
+  title: `Terms and Conditions | ${siteName}`,
+  description: "Terms and conditions for admissions, payments, and usage of LKD Classes services.",
+  alternates: {
+    canonical: "/terms-and-conditions",
+  },
+  openGraph: {
+    title: `Terms and Conditions | ${siteName}`,
+    description: "Terms and conditions for admissions, payments, and usage of LKD Classes services.",
+    url: `${siteUrl}/terms-and-conditions`,
+    siteName,
+    images: [siteLogo],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Terms and Conditions | ${siteName}`,
+    description: "Terms and conditions for admissions, payments, and usage of LKD Classes services.",
+    images: [siteLogo],
+  },
+};
 
 export default function TermsPage() {
   return (
@@ -32,5 +60,4 @@ export default function TermsPage() {
     </>
   );
 }
-
 

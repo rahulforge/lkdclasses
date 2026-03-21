@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  createRazorpayOrder,
-  getPromoDiscount,
-  getRazorpayKeyId,
-} from "../_utils";
+import { callCreatePaymentOrder } from "../_edge";
+import { getPromoDiscount } from "../_utils";
 import { resolveClassLabel } from "@/config/coursePricing";
 
 export async function POST(req: NextRequest) {
@@ -43,7 +40,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const order = await createRazorpayOrder({
+    const edgeOrder = await callCreatePaymentOrder({
+      flow: "registration",
+      class_value: selectedClass,
       amountInRupees: finalAmount,
       receipt: `reg_${Date.now()}`,
       notes: {
@@ -57,12 +56,27 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    const orderId = String(
+      edgeOrder.orderId ??
+        edgeOrder.order_id ??
+        edgeOrder.id ??
+        edgeOrder.razorpay_order_id ??
+        ""
+    ).trim();
+    if (!orderId) {
+      return NextResponse.json({ error: "Invalid order response from edge function" }, { status: 500 });
+    }
+
+    const keyId = String(
+      edgeOrder.keyId ?? process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? ""
+    ).trim();
+
     return NextResponse.json({
-      keyId: getRazorpayKeyId(),
-      orderId: order.id,
+      keyId,
+      orderId,
       amount: finalAmount,
-      currency: "INR",
-      paymentId: `reg_${order.id}`,
+      currency: String(edgeOrder.currency ?? "INR"),
+      paymentId: `reg_${orderId}`,
       baseAmount,
       subtotal,
       discountAmount: promo.discountAmount,

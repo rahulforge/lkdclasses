@@ -15,6 +15,22 @@ export type ResultRow = {
   rollNumber: string;
 };
 
+export type TseresultRow = {
+  id: string;
+  className?: string | null;
+  code?: string | null;
+  rollNumber: string;
+  name: string;
+  rank: number | null;
+  rightCount: number | null;
+  wrongCount: number | null;
+  total: number | null;
+  percentage: number | null;
+  certificateUrl: string | null;
+  examName: string | null;
+  testDate: string | null;
+};
+
 const CACHE_KEY = "lkd_admin_results_v1";
 
 function calculateGrade(percent: number): string {
@@ -114,5 +130,84 @@ export const resultService = {
   async getMyResults(rollNumber: string, force = false): Promise<ResultRow[]> {
     const all = await this.getResults(force);
     return all.filter((item) => item.rollNumber === rollNumber);
+  },
+
+  async getTseResult(rollNumber: string): Promise<TseresultRow | null> {
+    const safe = encodeURIComponent(rollNumber.trim());
+    const rows = await supabaseRest.from<any[]>(
+      "tse_results",
+      `roll_number=eq.${safe}&select=id,roll_number,student_name,rank,right_count,wrong_count,total,percentage,certificate_url,exam_name,test_date&limit=1`,
+      "GET"
+    );
+    const row = rows[0];
+    if (!row) return null;
+    return {
+      id: String(row.id),
+      rollNumber: String(row.roll_number ?? ""),
+      name: String(row.student_name ?? ""),
+      rank: row.rank ?? null,
+      rightCount: row.right_count ?? null,
+      wrongCount: row.wrong_count ?? null,
+      total: row.total ?? null,
+      percentage: row.percentage ?? null,
+      certificateUrl: row.certificate_url ?? null,
+      examName: row.exam_name ?? "TSE",
+      testDate: row.test_date ?? null,
+    };
+  },
+
+  async getTseResults(): Promise<TseresultRow[]> {
+    const rows = await supabaseRest.from<any[]>(
+      "tse_results",
+      "select=id,roll_number,student_name,rank,right_count,wrong_count,total,percentage,certificate_url,exam_name,test_date,class,code&order=created_at.desc&limit=2000",
+      "GET"
+    );
+    return rows.map((row) => ({
+      id: String(row.id),
+      className: row.class ?? null,
+      code: row.code ?? null,
+      rollNumber: String(row.roll_number ?? ""),
+      name: String(row.student_name ?? ""),
+      rank: row.rank ?? null,
+      rightCount: row.right_count ?? null,
+      wrongCount: row.wrong_count ?? null,
+      total: row.total ?? null,
+      percentage: row.percentage ?? null,
+      certificateUrl: row.certificate_url ?? null,
+      examName: row.exam_name ?? "TSE",
+      testDate: row.test_date ?? null,
+    }));
+  },
+
+  async upsertTseMany(rows: Array<{
+    className?: string | null;
+    code?: string | null;
+    rollNumber: string;
+    name: string;
+    rank?: number | null;
+    right?: number | null;
+    wrong?: number | null;
+    total?: number | null;
+    percentage?: number | null;
+    certificateUrl?: string | null;
+    examName?: string | null;
+    testDate?: string | null;
+  }>): Promise<void> {
+    const payload = rows.map((row) => ({
+      class: row.className ?? null,
+      code: row.code ?? null,
+      roll_number: row.rollNumber,
+      student_name: row.name,
+      rank: row.rank ?? null,
+      right_count: row.right ?? null,
+      wrong_count: row.wrong ?? null,
+      total: row.total ?? null,
+      percentage: row.percentage ?? null,
+      certificate_url: row.certificateUrl ?? null,
+      exam_name: row.examName ?? "TSE",
+      test_date: row.testDate ?? null,
+    }));
+
+    await supabaseRest.from("tse_results", "", "POST", payload);
   },
 };

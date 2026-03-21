@@ -1,19 +1,23 @@
+﻿import type { Metadata } from "next";
 import AboutPage from "./About";
 
-// Env variables
-const siteName = process.env.NEXT_PUBLIC_SITE_NAME;
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://localhost:3000";
-const siteDescription ="Learn more about LKD Classes in Sitalpur, Saran — Our mission, vision, and dedication to empowering students through expert faculty, structured learning, and a results-oriented approach.";
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "LKD Classes";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lkdclasses.com";
+const siteDescription =
+  "Learn more about LKD Classes in Sitalpur, Saran - our mission, vision, and dedication to empowering students through expert faculty, structured learning, and a results-oriented approach.";
 const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO || "/logo.png";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `About | ${siteName}`,
   description: siteDescription,
+  alternates: {
+    canonical: "/about",
+  },
   openGraph: {
     title: `About | ${siteName}`,
     description: siteDescription,
     url: `${siteUrl}/about`,
-    siteName: siteName,
+    siteName,
     images: [siteLogo],
     locale: "en_IN",
     type: "website",

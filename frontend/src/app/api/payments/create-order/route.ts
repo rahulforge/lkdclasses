@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createRazorpayOrder, getRazorpayKeyId, sbSelect, sbUpdate } from "../_utils";
+import { callCreatePaymentOrder } from "../_edge";
+import { sbSelect, sbUpdate } from "../_utils";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,29 +27,42 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const order = await createRazorpayOrder({
+    const edgeOrder = await callCreatePaymentOrder({
+      order_only: true,
       amountInRupees: Number(payment.amount ?? 0),
       receipt: `pay_${paymentId}`,
+      user_id: String(payment.user_id ?? ""),
       notes: {
         payment_id: paymentId,
         user_id: String(payment.user_id ?? ""),
       },
     });
 
-    await sbUpdate(
-      "payments",
-      `id=eq.${encodeURIComponent(paymentId)}`,
-      {
-        provider: "razorpay",
-        provider_order_id: order.id,
-      }
-    );
+    const orderId = String(
+      edgeOrder.orderId ??
+        edgeOrder.order_id ??
+        edgeOrder.id ??
+        edgeOrder.razorpay_order_id ??
+        ""
+    ).trim();
+    if (!orderId) {
+      return NextResponse.json({ error: "Invalid order response from edge function" }, { status: 500 });
+    }
+
+    await sbUpdate("payments", `id=eq.${encodeURIComponent(paymentId)}`, {
+      provider: "razorpay",
+      provider_order_id: orderId,
+    });
+
+    const keyId = String(
+      edgeOrder.keyId ?? process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? ""
+    ).trim();
 
     return NextResponse.json({
-      keyId: getRazorpayKeyId(),
-      orderId: order.id,
+      keyId,
+      orderId,
       amount: Number(payment.amount ?? 0),
-      currency: "INR",
+      currency: String(edgeOrder.currency ?? "INR"),
       paymentId,
       userId: String(payment.user_id ?? ""),
       promoCode: payment.promo_code ?? null,

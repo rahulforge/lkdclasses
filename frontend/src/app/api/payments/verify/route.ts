@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { callVerifyPayment } from "../_edge";
 import {
   getPlanByAmount,
   getPlanMap,
   monthKey,
   sbInsert,
-  sbRpc,
   sbSelect,
   sbUpdate,
-  verifyRazorpaySignature,
 } from "../_utils";
 
 function addMonthsIso(months: number): string {
@@ -35,19 +34,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing payment verification fields" }, { status: 400 });
     }
 
-    const valid = verifyRazorpaySignature({
-      orderId: razorpayOrderId,
-      paymentId: razorpayPaymentId,
-      signature: razorpaySignature,
-    });
-
-    if (!valid) {
-      await sbUpdate("payments", `id=eq.${encodeURIComponent(paymentId)}`, {
-        status: "failed",
-      });
-      return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
-    }
-
     const paymentRows = await sbSelect(
       "payments",
       `id=eq.${encodeURIComponent(paymentId)}&select=id,user_id,amount,status,promo_code,provider_order_id&limit=1`
@@ -55,6 +41,25 @@ export async function POST(req: NextRequest) {
     const payment = paymentRows[0];
     if (!payment?.id || !payment?.user_id) {
       return NextResponse.json({ error: "Payment not found" }, { status: 404 });
+    }
+
+    const verifyResult = await callVerifyPayment({
+      payment_id: paymentId,
+      user_id: String(payment.user_id ?? ""),
+      razorpay_payment_id: razorpayPaymentId,
+      razorpay_order_id: razorpayOrderId,
+      razorpay_signature: razorpaySignature,
+    });
+
+    const isValid = Boolean(
+      verifyResult?.success ?? verifyResult?.valid ?? verifyResult?.isValid
+    );
+
+    if (!isValid) {
+      await sbUpdate("payments", `id=eq.${encodeURIComponent(paymentId)}`, {
+        status: "failed",
+      });
+      return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
     }
 
     await sbUpdate("payments", `id=eq.${encodeURIComponent(paymentId)}`, {

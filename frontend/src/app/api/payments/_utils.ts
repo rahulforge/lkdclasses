@@ -37,10 +37,13 @@ let planCache:
     }
   | null = null;
 
-function assertEnv() {
+function assertSupabaseEnv() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
   }
+}
+
+function assertRazorpayEnv() {
   if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
     throw new Error("Missing RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET");
   }
@@ -215,7 +218,7 @@ export async function getPromoDiscount(
 }
 
 export async function sbSelect(table: string, query: string): Promise<SupabaseRow[]> {
-  assertEnv();
+  assertSupabaseEnv();
   const url = `${SUPABASE_URL}/rest/v1/${table}?${query}`;
   const res = await fetch(url, {
     method: "GET",
@@ -230,7 +233,7 @@ export async function sbSelect(table: string, query: string): Promise<SupabaseRo
 }
 
 export async function sbInsert(table: string, payload: Json | Json[]): Promise<SupabaseRow[]> {
-  assertEnv();
+  assertSupabaseEnv();
   const url = `${SUPABASE_URL}/rest/v1/${table}`;
   const res = await fetch(url, {
     method: "POST",
@@ -242,7 +245,7 @@ export async function sbInsert(table: string, payload: Json | Json[]): Promise<S
 }
 
 export async function sbUpdate(table: string, filterQuery: string, payload: Json): Promise<SupabaseRow[]> {
-  assertEnv();
+  assertSupabaseEnv();
   const url = `${SUPABASE_URL}/rest/v1/${table}?${filterQuery}`;
   const res = await fetch(url, {
     method: "PATCH",
@@ -254,7 +257,7 @@ export async function sbUpdate(table: string, filterQuery: string, payload: Json
 }
 
 export async function sbRpc<T = unknown>(fn: string, payload: Json): Promise<T> {
-  assertEnv();
+  assertSupabaseEnv();
   const url = `${SUPABASE_URL}/rest/v1/rpc/${fn}`;
   const res = await fetch(url, {
     method: "POST",
@@ -270,7 +273,7 @@ export async function createRazorpayOrder(input: {
   receipt: string;
   notes?: Record<string, string>;
 }) {
-  assertEnv();
+  assertRazorpayEnv();
   const auth = Buffer.from(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString("base64");
   const res = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
@@ -301,7 +304,7 @@ export function verifyRazorpaySignature(input: {
   paymentId: string;
   signature: string;
 }): boolean {
-  assertEnv();
+  assertRazorpayEnv();
   const digest = crypto
     .createHmac("sha256", RAZORPAY_KEY_SECRET)
     .update(`${input.orderId}|${input.paymentId}`)
@@ -311,6 +314,6 @@ export function verifyRazorpaySignature(input: {
 }
 
 export function getRazorpayKeyId(): string {
-  assertEnv();
+  assertRazorpayEnv();
   return RAZORPAY_KEY_ID;
 }

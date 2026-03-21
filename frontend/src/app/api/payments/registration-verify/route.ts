@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyRazorpaySignature } from "../_utils";
+import { callVerifyPayment } from "../_edge";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,13 +17,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing payment verification fields" }, { status: 400 });
     }
 
-    const valid = verifyRazorpaySignature({
-      orderId: razorpayOrderId,
-      paymentId: razorpayPaymentId,
-      signature: razorpaySignature,
+    const verifyResult = await callVerifyPayment({
+      flow: "registration",
+      razorpay_payment_id: razorpayPaymentId,
+      razorpay_order_id: razorpayOrderId,
+      razorpay_signature: razorpaySignature,
     });
 
-    if (!valid) {
+    const isValid = Boolean(
+      verifyResult?.success ?? verifyResult?.valid ?? verifyResult?.isValid
+    );
+
+    if (!isValid) {
       return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
     }
 

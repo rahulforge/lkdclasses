@@ -145,7 +145,7 @@ export default function AboutPage() {
               <h3 className="text-2xl font-semibold text-indigo-600 mb-4">Contact Information</h3>
               <p className="text-gray-700 mb-3"><strong>Address:</strong> Parsa Road, Sitalpur, Saran, Bihar, India</p>
               <p className="text-gray-700 mb-3"><strong>Phone:</strong> +918002271522</p>
-              <p className="text-gray-700 mb-3"><strong>Email:</strong> lkdclasses@gmail.com</p>
+              <p className="text-gray-700 mb-3"><strong>Email:</strong> lkdclasses2007@gmail.com</p>
               {/* Social Media */}
               <div className="flex gap-4 mb-6">
                 <a

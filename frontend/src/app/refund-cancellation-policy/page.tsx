@@ -1,4 +1,32 @@
+﻿import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "LKD Classes";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lkdclasses.com";
+const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO || "/logo.png";
+
+export const metadata: Metadata = {
+  title: `Refund and Cancellation Policy | ${siteName}`,
+  description: "Refund and cancellation policy for LKD Classes fee payments.",
+  alternates: {
+    canonical: "/refund-cancellation-policy",
+  },
+  openGraph: {
+    title: `Refund and Cancellation Policy | ${siteName}`,
+    description: "Refund and cancellation policy for LKD Classes fee payments.",
+    url: `${siteUrl}/refund-cancellation-policy`,
+    siteName,
+    images: [siteLogo],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Refund and Cancellation Policy | ${siteName}`,
+    description: "Refund and cancellation policy for LKD Classes fee payments.",
+    images: [siteLogo],
+  },
+};
 
 export default function RefundCancellationPolicyPage() {
   return (
@@ -32,5 +60,4 @@ export default function RefundCancellationPolicyPage() {
     </>
   );
 }
-
 

@@ -161,8 +161,9 @@ function RegistrationPageContent() {
     return true;
   };
 
-  const nextStep = () => {
-    if (validateStep()) setStep((prev) => prev + 1);
+  const nextStep = async () => {
+    if (!validateStep()) return;
+    setStep((prev) => prev + 1);
   };
 
   const prevStep = () => setStep((prev) => prev - 1);
@@ -314,11 +315,6 @@ function RegistrationPageContent() {
             <p><b>App Access Charge:</b> Rs {APP_ACCESS_FEE}</p>
             <p><b>Total Payable:</b> Rs {registrationFee}</p>
             <p className="text-sm text-gray-600">Registration will be completed after successful online payment. Monthly fees are paid inside the app.</p>
-            <div className="flex gap-4 mt-4">
-              <button className="px-6 py-3 rounded-xl font-bold border bg-indigo-600 text-white">
-                Pay Online (Required)
-              </button>
-            </div>
             <button
               onClick={handleSubmit}
               disabled={loading}
@@ -331,7 +327,11 @@ function RegistrationPageContent() {
 
         <div className="flex justify-between mt-6">
           {step > 1 && <button onClick={prevStep} className="px-6 py-2 rounded-lg border font-semibold hover:bg-gray-100 transition">Previous</button>}
-          {step < 3 && <button onClick={nextStep} className="px-6 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">Next</button>}
+          {step < 3 && (
+            <button onClick={nextStep} className="px-6 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
+              Next
+            </button>
+          )}
         </div>
       </section>
 
