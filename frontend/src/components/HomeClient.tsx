@@ -22,8 +22,8 @@ export default function HomeClient() {
   const stats = [
     { number: "800+", label: "Students" },
     { number: "1500+", label: "Alumni" },
-    { number: "20000+", label: "Passouts" },
-    { number: "1500+", label: "Top Rankers" },
+    { number: "5700+", label: "Passouts" },
+    { number: "500+", label: "Top Rankers" },
   ];
 
   const courses = COURSE_PRICING.map((item) => ({
@@ -141,7 +141,7 @@ export default function HomeClient() {
         className="relative w-full h-screen flex flex-col justify-center items-center bg-gradient-to-r from-indigo-500 to-blue-400 text-white text-center overflow-hidden px-4 md:px-6"
       >
         <h1 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg leading-tight relative">
-          LKD Classes Sitalpur <br />
+          LKD Classes Sitalpur, Saran <br />
           <span className="text-yellow-300 relative inline-block">
             Best Coaching Institute
             <span className="absolute left-0 -bottom-2 w-full h-1 bg-yellow-400 rounded-full opacity-50 animate-pulse"></span>
@@ -160,12 +160,20 @@ export default function HomeClient() {
             Enroll Now
           </a>
           <a
-            href={appDownloadUrl}
+            href="/result"
             data-hero-cta="true"
             data-cta="download_app_hero"
             className="bg-white text-indigo-700 px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition transform"
           >
-            Download App
+            9th TSE Result
+          </a>
+          <a
+            href="https://interbiharboard.com"
+            data-hero-cta="true"
+            data-cta="download_app_hero"
+            className="bg-yellow-300 text-indigo-700 px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition transform"
+          >
+            View Inter 2026 Result
           </a>
         </div>
       </section>

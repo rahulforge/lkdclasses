@@ -57,8 +57,8 @@ export default function Navbar() {
   const appDownloadUrl = process.env.NEXT_PUBLIC_APP_DOWNLOAD_URL || "/pay/app-access";
   const links = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    // { name: "About", href: "/about" },
+    // { name: "Contact", href: "/contact" },
     { name: "Founder", href: "/founder" },
     // { name: "Top Rankers", href: "/top-rankers" },
     { name: "Courses", href: "/courses" },

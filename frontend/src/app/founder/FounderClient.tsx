@@ -59,7 +59,7 @@ export default function FounderClient() {
             Mr. Laliteshwar Kumar
           </h2>
           <p className="text-lg md:text-xl opacity-90 leading-relaxed">
-            The visionary behind <b>LKD Classes</b> â€” inspiring students to
+            The visionary behind <b>LKD Classes</b>  inspiring students to
             think, learn, and grow with passion and discipline.
           </p>
         </div>
@@ -96,8 +96,8 @@ export default function FounderClient() {
               Saran and beyond.
             </p>
             <p className="font-semibold text-indigo-700 italic">
-              â€œEducation is not the filling of a pail, but the lighting of a
-              fire.â€
+              Education is not the filling of a pail, but the lighting of a
+              fire.
             </p>
           </div>
         </div>
@@ -114,10 +114,10 @@ export default function FounderClient() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
 
           {[
-            { value: "10+", label: "Years of Excellence", icon: "ðŸ†" },
-            { value: "5000+", label: "Students Mentored", icon: "ðŸŽ“" },
-            { value: "100+", label: "Top Rankers", icon: "ðŸ“˜" },
-            { value: "5+", label: "Dedicated Faculty", icon: "ðŸ‘¨â€ðŸ«" },
+            { value: "10+", label: "Years of Excellence", icon: "" },
+            { value: "5000+", label: "Students Mentored", icon: "“" },
+            { value: "100+", label: "Top Rankers", icon: "" },
+            { value: "5+", label: "Dedicated Faculty", icon: "" },
           ].map((item, index) => (
             <div
               key={index}
@@ -144,10 +144,13 @@ export default function FounderClient() {
         <div className="relative max-w-4xl mx-auto">
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-indigo-300 h-full"></div>
           {[
-            { year: "2010", desc: "Started teaching locally in Saran." },
-            { year: "2014", desc: "Founded LKD Classes with first batch of students." },
-            { year: "2018", desc: "Expanded to advanced coaching for 6thâ€“12th." },
-            { year: "2023", desc: "Celebrated 5000+ students mentored milestone." },
+            { year: "2007", desc: "Started teaching locally in Saran." },
+            { year: "2013", desc: "Founded LKD Classes with first batch of students." },
+            { year: "2017", desc: "Expanded to advanced coaching for 6th and 12th." },
+            { year: "2023", desc: "Akash got 1st Rank (Bihar Topper) in Matric Special exam , Bihar" },
+            { year: "2024", desc: "Ravi (94.2%) and Shambav (94.2%) recieved call for Bihar Topper Verification" },
+            { year: "2025", desc: "Chandan (91.6%) and Karan (92%) recieved call for Bihar Topper Verification" },
+            { year: "2025", desc: "Abhijit (94.2%) and Kumkum (89.6%) awarded by DEO Saran for District Topper" },
           ].map((event, i) => (
             <div
               key={i}
@@ -175,10 +178,10 @@ export default function FounderClient() {
       >
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            â€œTrue education builds character, confidence, and clarity.â€
+            True education builds character, confidence, and clarity.
           </h2>
           <p className="text-lg opacity-90 mb-4">
-            Mr. Laliteshwar believes in a holistic approach â€” nurturing minds
+            Mr. Laliteshwar believes in a holistic approach nurturing minds
             while developing values that shape responsible citizens and achievers.
           </p>
         </div>
