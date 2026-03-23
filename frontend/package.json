@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^123.0.0",
     "@netlify/next": "^1.4.9",
     "chart.js": "^4.5.0",
     "framer-motion": "^12.23.22",

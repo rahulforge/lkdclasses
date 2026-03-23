@@ -253,9 +253,30 @@ export async function GET(req: NextRequest) {
       backgroundUrl: templateUrl,
     });
 
+    const isServerless = Boolean(
+      process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
+    );
+    let executablePath = chromePath;
+    let launchArgs = ["--no-sandbox", "--disable-setuid-sandbox"];
+    let headless: boolean | "new" = "new";
+    let defaultViewport: { width: number; height: number } | undefined = {
+      width: 1123,
+      height: 794,
+    };
+
+    if (isServerless) {
+      const chromium = await import("@sparticuz/chromium");
+      executablePath = await chromium.executablePath();
+      launchArgs = chromium.args;
+      headless = chromium.headless;
+      defaultViewport = chromium.defaultViewport;
+    }
+
     const browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      executablePath: chromePath,
+      args: launchArgs,
+      executablePath,
+      headless,
+      defaultViewport,
     });
 
     const page = await browser.newPage();
