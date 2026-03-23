@@ -254,7 +254,10 @@ export async function GET(req: NextRequest) {
     });
 
     const isServerless = Boolean(
-      process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
+      process.env.AWS_LAMBDA_FUNCTION_NAME ||
+        process.env.LAMBDA_TASK_ROOT ||
+        process.env.AWS_EXECUTION_ENV ||
+        process.env.NETLIFY
     );
     let executablePath = chromePath;
     let launchArgs = ["--no-sandbox", "--disable-setuid-sandbox"];
@@ -265,6 +268,16 @@ export async function GET(req: NextRequest) {
     };
 
     if (isServerless) {
+      if (!process.env.AWS_LAMBDA_JS_RUNTIME) {
+        process.env.AWS_LAMBDA_JS_RUNTIME = "nodejs20.x";
+      }
+      if (!process.env.LD_LIBRARY_PATH) {
+        process.env.LD_LIBRARY_PATH =
+          "/var/task/node_modules/@sparticuz/chromium/lib";
+      }
+      if (!process.env.FONTCONFIG_PATH) {
+        process.env.FONTCONFIG_PATH = "/tmp/fonts";
+      }
       const chromium = (await import("@sparticuz/chromium")).default;
       executablePath = await chromium.executablePath();
       launchArgs = chromium.args;
