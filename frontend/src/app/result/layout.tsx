@@ -6,7 +6,7 @@ const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO || "/logo.png";
 
 export const metadata: Metadata = {
   title: `Results | ${siteName}`,
-  description: "Check LKD Classes results using mobile number and password.",
+  description: "Check LKD Classes results.",
   alternates: {
     canonical: "/result",
   },

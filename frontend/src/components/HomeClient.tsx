@@ -173,7 +173,15 @@ export default function HomeClient() {
             data-cta="download_app_hero"
             className="bg-yellow-300 text-indigo-700 px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition transform"
           >
-            View Inter 2026 Result
+            Inter 2026 Result Link 1
+          </a>
+          <a
+            href="https://bsebexam.com"
+            data-hero-cta="true"
+            data-cta="download_app_hero"
+            className="bg-yellow-300 text-indigo-700 px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition transform"
+          >
+            Inter 2026 Result Link 2
           </a>
         </div>
       </section>

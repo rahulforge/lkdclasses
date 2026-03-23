@@ -6,12 +6,13 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { COURSE_PRICING } from "@/config/coursePricing";
+import { FaCheckCircle, FaGraduationCap } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const courses = COURSE_PRICING.map((item) => ({
   grade: item.label,
-  icon: "??",
+  icon: <FaGraduationCap className="text-indigo-600" />,
   subjects: ["Hindi", "English", "Math", "Science"],
   description: "Monthly learning plan with weekly practice and doubt support.",
   benefits: [
@@ -68,13 +69,13 @@ export default function CoursesClient() {
                   <div className="border rounded-lg px-3 py-2 text-left bg-indigo-50">
                     <p className="text-sm font-semibold text-indigo-700">Monthly</p>
                     <p className="text-xs text-gray-700">Fee: Rs {course.monthlyFee}</p>
-                    <div className="mt-2 flex gap-2">
+                    <div className="mt-2 flex flex-wrap gap-2">
                       <a
                         href={`/register?class=${encodeURIComponent(course.grade)}&plan=monthly`}
                         data-cta="enroll_course_card"
                         data-class={course.grade}
                         data-plan="monthly"
-                        className="bg-indigo-600 text-white px-3 py-1 rounded-lg text-xs font-semibold"
+                        className="bg-indigo-600 text-white px-3 py-1 rounded-lg text-xs font-semibold flex-1 text-center"
                       >
                         Enroll
                       </a>
@@ -82,7 +83,7 @@ export default function CoursesClient() {
                         href={payLink}
                         data-cta="pay_fees_course_card"
                         data-class={course.grade}
-                        className="bg-yellow-400 text-indigo-900 px-3 py-1 rounded-lg text-xs font-semibold"
+                        className="bg-yellow-400 text-indigo-900 px-3 py-1 rounded-lg text-xs font-semibold flex-1 text-center"
                       >
                         Pay Fees
                       </a>
@@ -132,7 +133,9 @@ export default function CoursesClient() {
               <ul className="list-none space-y-3">
                 {selectedCourse.benefits.map((item, index) => (
                   <li key={index} className="flex items-start">
-                    <span className="text-yellow-500 mr-3 text-2xl">?</span>
+                    <span className="text-amber-500 mr-3 text-xl">
+                      <FaCheckCircle />
+                    </span>
                     {item}
                   </li>
                 ))}

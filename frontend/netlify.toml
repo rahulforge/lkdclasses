@@ -3,7 +3,7 @@
   command = "next build"
 
 [[redirects]]
-  from = "https://lkdclasses.netlify.app/*"
+  from = "/*"
   to = "https://lkdclasses.com/:splat"
   status = 301
   force = true

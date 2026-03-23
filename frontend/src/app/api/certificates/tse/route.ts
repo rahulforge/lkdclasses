@@ -43,6 +43,7 @@ function buildHtml(input: {
   rollNumber: string;
   className: string;
   rank: string;
+  rankOutOf: string | null;
   percentage: string;
   backgroundUrl: string;
 }) {
@@ -77,7 +78,7 @@ function buildHtml(input: {
     background-image: url('${input.backgroundUrl}');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 100% 100%;
+    background-size: cover;
   }
 
   /* OVERLAY CONTENT */
@@ -90,7 +91,7 @@ function buildHtml(input: {
   /* NAME (MAIN FOCUS) */
   .name {
     position: absolute;
-    top: 280px;
+    top: 360px;
     left: 0;
     width: 100%;
     text-align: center;
@@ -110,27 +111,30 @@ function buildHtml(input: {
   /* DETAILS SECTION */
   .details {
     position: absolute;
-    top: 420px;
+    top: 440px;
     left: 50%;
     transform: translateX(-50%);
     width: 70%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
+    gap: 36px;
     text-align: center;
   }
 
   .field {
-    font-size: 14px;
+    font-size: 20px;
+    font-weight: 600;
     color: #0b2a6f;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
 
   .value {
     margin-top: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    border-bottom: 1px solid #0b2a6f;
-    padding-bottom: 4px;
+    font-size: 22px;
+    font-weight: 700;
+    border-bottom: 2px solid #0b2a6f;
+    padding-bottom: 6px;
   }
 
   /* OPTIONAL SECOND ROW */
@@ -173,7 +177,9 @@ function buildHtml(input: {
 
         <div class="field">
           Rank
-          <div class="value">${s(input.rank)}</div>
+          <div class="value">${
+            input.rankOutOf ? `${s(input.rank)}/${s(input.rankOutOf)}` : s(input.rank)
+          }</div>
         </div>
       </div>
 
@@ -212,6 +218,18 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    const classWiseTotals: Record<string, string> = {
+      "6": "100",
+      "7": "100",
+      "8": "100",
+      "9": "100",
+      "10": "100",
+      "11": "190",
+      "12": "140",
+    };
+    const classKey = String(row.class ?? "").trim().toLowerCase();
+    const rankOutOf = classWiseTotals[classKey] ?? null;
+
     const origin = new URL(req.url).origin;
     const assetBase = process.env.NEXT_PUBLIC_SITE_URL || origin;
     const baseTemplateUrl = `${assetBase}/certificates/tse-template.png`;
@@ -230,6 +248,7 @@ export async function GET(req: NextRequest) {
       rollNumber: row.roll_number,
       className: row.class,
       rank: row.rank,
+      rankOutOf,
       percentage: row.percentage,
       backgroundUrl: templateUrl,
     });
@@ -264,6 +283,7 @@ export async function GET(req: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
+        "Content-Length": String(pdf.byteLength),
         "Content-Disposition": `attachment; filename="TSE-${roll}.pdf"`,
       },
     });

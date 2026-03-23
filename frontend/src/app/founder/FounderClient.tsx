@@ -6,6 +6,12 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import {
+  FaChalkboardTeacher,
+  FaClock,
+  FaTrophy,
+  FaUserGraduate,
+} from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -114,16 +120,34 @@ export default function FounderClient() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
 
           {[
-            { value: "10+", label: "Years of Excellence", icon: "" },
-            { value: "5000+", label: "Students Mentored", icon: "“" },
-            { value: "100+", label: "Top Rankers", icon: "" },
-            { value: "5+", label: "Dedicated Faculty", icon: "" },
+            {
+              value: "19+",
+              label: "Years of Excellence",
+              icon: FaClock,
+            },
+            {
+              value: "5700+",
+              label: "Students Mentored",
+              icon: FaUserGraduate,
+            },
+            {
+              value: "500+",
+              label: "Top Rankers",
+              icon: FaTrophy,
+            },
+            {
+              value: "10+",
+              label: "Dedicated Faculty",
+              icon: FaChalkboardTeacher,
+            },
           ].map((item, index) => (
             <div
               key={index}
               className="p-6 bg-white rounded-2xl shadow hover:shadow-xl transition transform hover:scale-105 flex flex-col items-center"
             >
-              <div className="text-5xl mb-2">{item.icon}</div>
+              <div className="text-4xl text-indigo-600 mb-3">
+                <item.icon />
+              </div>
               <h3 className="text-4xl font-bold text-indigo-600 mb-2">
                 {item.value}
               </h3>
@@ -195,18 +219,36 @@ export default function FounderClient() {
           Glimpses of Leadership & Mentorship
         </h2>
         <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {["founder1.jpg", "founder2.jpg", "founder3.jpg"].map((img, i) => (
+          {[
+            {
+              img: "founder1.jpg",
+              caption: "DEO office, सारण द्वारा सम्मानित होते हुए।",
+            },
+            {
+              img: "founder2.jpg",
+              caption:
+                "बीपीएससी अधिकारी जयराम सर द्वारा शंभव को सम्मानित करते हुए।",
+            },
+            {
+              img: "founder3.jpg",
+              caption:
+                "पूर्व मंत्री सुरेंद्र राम (बिहार सरकार) द्वारा LKD सर को सम्मानित करते हुए।",
+            },
+          ].map((item, i) => (
             <div
               key={i}
-              className="overflow-hidden rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
+              className="overflow-hidden rounded-2xl bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
               <Image
-                src={`/images/${img}`}
+                src={`/images/${item.img}`}
                 alt="Founder Moment"
                 width={400}
                 height={300}
                 className="object-cover w-full h-64"
               />
+              <div className="px-5 py-4 text-sm text-slate-700 font-semibold tracking-wide">
+                {item.caption}
+              </div>
             </div>
           ))}
         </div>
