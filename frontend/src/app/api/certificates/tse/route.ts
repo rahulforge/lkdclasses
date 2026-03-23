@@ -258,17 +258,17 @@ export async function GET(req: NextRequest) {
     );
     let executablePath = chromePath;
     let launchArgs = ["--no-sandbox", "--disable-setuid-sandbox"];
-    let headless: boolean | "new" = "new";
+    let headless: boolean | "new" = true;
     let defaultViewport: { width: number; height: number } | undefined = {
       width: 1123,
       height: 794,
     };
 
     if (isServerless) {
-      const chromium = await import("@sparticuz/chromium");
+      const chromium = (await import("@sparticuz/chromium")).default;
       executablePath = await chromium.executablePath();
       launchArgs = chromium.args;
-      headless = chromium.headless;
+      headless = true;
       defaultViewport = chromium.defaultViewport;
     }
 
@@ -300,7 +300,7 @@ export async function GET(req: NextRequest) {
 
     await browser.close();
 
-    return new NextResponse(pdf, {
+    return new NextResponse(Buffer.from(pdf), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

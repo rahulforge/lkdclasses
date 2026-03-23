@@ -1,6 +1,6 @@
 [build]
   base = "frontend"
-  command = "next build"
+  command = "next build --webpack"
 
 [[redirects]]
   from = "/*"
