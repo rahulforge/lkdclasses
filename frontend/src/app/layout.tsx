@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import { Toaster } from "react-hot-toast";
 import PageTransition from "../components/PageTransition";
+import ChatWidget from "../components/ChatWidget";
 import Script from "next/script";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lkdclasses.com";
@@ -95,6 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Page transitions now in client component */}
         <PageTransition>{children}</PageTransition>
+        <ChatWidget />
 
         {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">

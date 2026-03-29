@@ -25,3 +25,12 @@ body {
 .animate-bounce-slow {
   animation: bounce-slow 2s infinite;
 }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}

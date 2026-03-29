@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
+import { authService } from "@/services/authService";
 import { motion } from "framer-motion";
 import Sidebar from "./components/Sidebar";
 import DashboardOverview from "./components/DashboardOverview";
@@ -13,12 +15,22 @@ import EventsSection from "./components/EventsSection";
 import GallerySection from "./components/GallerySection";
 import YouTubeSection from "./components/YouTubeSection";
 import NotificationsSection from "./components/NotificationsSection";
+import ChatbotKnowledgeSection from "./components/ChatbotKnowledgeSection";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 
 export default function Admin() {
   const { user, loading } = useAuth("admin");
+  const router = useRouter();
   const [activeSection, setActiveSection] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } finally {
+      router.replace("/login");
+    }
+  };
 
   if (loading) return <div className="p-10 text-center text-gray-600">Loading...</div>;
 
@@ -42,6 +54,8 @@ export default function Admin() {
       return <YouTubeSection />;
     case "notifications":
       return <NotificationsSection />;
+    case "chatbot":
+      return <ChatbotKnowledgeSection />;
     default:
       return <DashboardOverview setActiveSection={setActiveSection} />;
   }
@@ -52,7 +66,7 @@ export default function Admin() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex">
-        <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+        <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} onLogout={handleLogout} />
       </aside>
 
     {/* Mobile Hamburger Top Bar */}
@@ -96,6 +110,7 @@ export default function Admin() {
                 setActiveSection(section);
                 setSidebarOpen(false);
               }}
+              onLogout={handleLogout}
             />
           </motion.div>
         </motion.div>

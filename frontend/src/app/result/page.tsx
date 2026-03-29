@@ -9,6 +9,7 @@ export default function ResultLookupPage() {
   const [rollNumber, setRollNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [className, setClassName] = useState("");
   const [result, setResult] = useState<TseresultRow | null>(null);
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
@@ -23,26 +24,36 @@ export default function ResultLookupPage() {
       setDownloadSuccess("");
       setResult(null);
 
-      const roll = rollNumber.trim();
-      if (!roll) {
-        throw new Error("Enter roll number");
-      }
+    const roll = rollNumber.trim();
+const cls = className.trim();
+
+if (!cls && !roll) {
+  throw new Error("Select class and enter roll number");
+}
+
+if (!cls) {
+  throw new Error("Please select class");
+}
+
+if (!roll) {
+  throw new Error("Please enter roll number");
+}
 
       try {
-        const cachedRaw = localStorage.getItem(`tse_result_${roll}`);
+        const cachedRaw = localStorage.getItem(`tse_result_${cls}_${roll}`);
         if (cachedRaw) {
           const cached = JSON.parse(cachedRaw) as { ts: number; row: TseresultRow };
           if (cached?.ts && cached?.row && Date.now() - cached.ts < RESULT_CACHE_TTL_MS) {
             setResult(cached.row);
             return;
           }
-          localStorage.removeItem(`tse_result_${roll}`);
+          localStorage.removeItem(`tse_result_${cls}_${roll}`);
         }
       } catch {
         // ignore cache errors
       }
 
-      const row = await resultService.getTseResult(roll);
+      const row = await resultService.getTseResult(roll, cls);
       if (!row) {
         throw new Error("Result not found for this roll number");
       }
@@ -50,7 +61,7 @@ export default function ResultLookupPage() {
 
       try {
         localStorage.setItem(
-          `tse_result_${roll}`,
+          `tse_result_${cls}_${roll}`,
           JSON.stringify({ ts: Date.now(), row })
         );
       } catch {
@@ -189,6 +200,25 @@ export default function ResultLookupPage() {
         </div>
 
         <div className="grid gap-4 rounded-2xl border border-slate-700/70 bg-slate-950/70 p-4">
+        <div>
+  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+    Class
+  </label>
+  <select
+  value={className}
+  onChange={(e) => setClassName(e.target.value)}
+  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white"
+>
+  <option value="">Select Class</option>
+  <option value="6">Class 6</option>
+  <option value="7">Class 7</option>
+  <option value="8">Class 8</option>
+  <option value="9">Class 9</option>
+  <option value="10">Class 10</option>
+  <option value="11">Class 11</option>
+  <option value="12">Class 12</option>
+</select>
+</div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-slate-400">Roll Number</label>
             <input
@@ -202,7 +232,7 @@ export default function ResultLookupPage() {
           <button
             type="button"
             onClick={handleLookup}
-            disabled={loading || downloading}
+            disabled={loading || downloading || !className || !rollNumber}
             className="rounded-xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Checking..." : "Check Result"}

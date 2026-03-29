@@ -132,13 +132,14 @@ export const resultService = {
     return all.filter((item) => item.rollNumber === rollNumber);
   },
 
-  async getTseResult(rollNumber: string): Promise<TseresultRow | null> {
-    const safe = encodeURIComponent(rollNumber.trim());
-    const rows = await supabaseRest.from<any[]>(
-      "tse_results",
-      `roll_number=eq.${safe}&select=id,roll_number,student_name,rank,right_count,wrong_count,total,percentage,certificate_url,exam_name,test_date&limit=1`,
-      "GET"
-    );
+  async getTseResult(rollNumber: string, className: string): Promise<TseresultRow | null> {
+  const safeRoll = encodeURIComponent(rollNumber.trim());
+  const safeClass = encodeURIComponent(className.trim());
+     const rows = await supabaseRest.from<any[]>(
+    "tse_results",
+    `roll_number=eq.${safeRoll}&class=eq.${safeClass}&select=id,roll_number,student_name,rank,right_count,wrong_count,total,percentage,certificate_url,exam_name,test_date&limit=1`,
+    "GET"
+  );
     const row = rows[0];
     if (!row) return null;
     return {
