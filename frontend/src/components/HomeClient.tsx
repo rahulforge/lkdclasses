@@ -168,20 +168,20 @@ export default function HomeClient() {
             9th TSE Result
           </a>
           <a
-            href="https://interbiharboard.com"
+            href="https://matricbiharboard.com"
             data-hero-cta="true"
             data-cta="download_app_hero"
             className="bg-yellow-300 text-indigo-700 px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition transform"
           >
-            Inter 2026 Result Link 1
+            Matric 2026 Result Link 1
           </a>
           <a
-            href="https://bsebexam.com"
+            href="https://result.biharboardonline.org"
             data-hero-cta="true"
             data-cta="download_app_hero"
             className="bg-yellow-300 text-indigo-700 px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition transform"
           >
-            Inter 2026 Result Link 2
+            Matric 2026 Result Link 2
           </a>
         </div>
       </section>
