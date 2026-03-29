@@ -13,6 +13,7 @@ const pages: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap[0]["ch
   { path: "/top-rankers", changeFrequency: "monthly", priority: 0.75 },
   { path: "/result", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
+  { path: "/faq", changeFrequency: "monthly", priority: 0.7 },
   { path: "/register", changeFrequency: "monthly", priority: 0.7 },
   { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.4 },
   { path: "/terms-and-conditions", changeFrequency: "yearly", priority: 0.4 },

@@ -13,6 +13,8 @@ type ChatMessage = {
 type ApiResponse = {
   answer: string;
   suggestions?: string[];
+  needsClarification?: boolean;
+  clarificationKey?: "class" | "result-type" | "general";
 };
 
 const QUICK_ACTIONS = ["Courses batao", "Admission kaise hoga", "Result link", "Contact number"];
@@ -73,12 +75,13 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [avatarMode, setAvatarMode] = useState<ChatAvatarMode>("idle");
+  const [pendingClarification, setPendingClarification] = useState<"class" | "result-type" | "general" | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: createId(),
       role: "assistant",
       text:
-        "Welcome! Main LKD Classes assistant hoon. Aap courses, admission, results aur contact ke baare me poochh sakte hain.",
+        "Welcome! Main LKD Classes assistant hoon. Aap courses, admission, results, founder, achievements aur contact ke baare me poochh sakte hain.",
     },
   ]);
   const [suggestions, setSuggestions] = useState<string[]>(QUICK_ACTIONS);
@@ -136,11 +139,39 @@ export default function ChatWidget() {
     }, duration);
   }
 
-  async function sendMessage(message: string) {
+  function applyClarificationContext(message: string) {
     const trimmed = message.trim();
-    if (!trimmed || loading) return;
+    if (!pendingClarification) return trimmed;
 
-    setMessages((prev) => [...prev, { id: createId(), role: "user", text: trimmed }]);
+    if (pendingClarification === "class") {
+      if (/^(6|7|8|9|10|11|12)$/.test(trimmed)) {
+        return `Class ${trimmed} fee`;
+      }
+      if (/^class\s*(6|7|8|9|10|11|12)$/i.test(trimmed)) {
+        return `${trimmed} fee`;
+      }
+      if (/competition/i.test(trimmed)) {
+        return "Competition fee";
+      }
+    }
+
+    if (pendingClarification === "result-type") {
+      const lower = trimmed.toLowerCase();
+      if (lower.includes("link")) return "Result link";
+      if (lower.includes("tse")) return "TSE result";
+      if (lower.includes("certificate")) return "Certificate";
+    }
+
+    return trimmed;
+  }
+
+  async function sendMessage(message: string) {
+    const raw = message.trim();
+    if (!raw || loading) return;
+
+    const trimmed = applyClarificationContext(raw);
+
+    setMessages((prev) => [...prev, { id: createId(), role: "user", text: raw }]);
     setInput("");
     setLoading(true);
     setAvatarMode("listening");
@@ -157,18 +188,21 @@ export default function ChatWidget() {
       });
 
       const data = (await response.json()) as ApiResponse & { error?: string };
-      const answer = data.answer || data.error || `Please contact: ${process.env.NEXT_PUBLIC_INSTITUTE_PHONE || "+91 8002271522"}`;
+      const answer = data.answer || data.error || `For direct help, call ${process.env.NEXT_PUBLIC_INSTITUTE_PHONE || "+91 8002271522"}.`;
 
       setMessages((prev) => [...prev, { id: createId(), role: "assistant", text: answer }]);
       triggerSpeakingEffect(answer);
+
+      setPendingClarification(data.needsClarification ? data.clarificationKey ?? "general" : null);
 
       if (Array.isArray(data.suggestions) && data.suggestions.length > 0) {
         setSuggestions(data.suggestions.slice(0, 4));
       }
     } catch {
-      const answer = `Abhi response me issue aa raha hai. Direct open karein: ${siteUrl}/contact`;
+      const answer = `Abhi response me issue aa raha hai. Open Contact Page: ${siteUrl}/contact`;
       setMessages((prev) => [...prev, { id: createId(), role: "assistant", text: answer }]);
       triggerSpeakingEffect(answer);
+      setPendingClarification(null);
     } finally {
       setLoading(false);
     }

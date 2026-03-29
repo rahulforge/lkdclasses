@@ -13,17 +13,19 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-            <ul className="text-base">
-              <li><a href="/about" className="hover:text-yellow-400 transition">About</a></li>
-              <li><a href="/courses" className="hover:text-yellow-400 transition">Courses</a></li>
-              <li><a href="/contact" className="hover:text-yellow-400 transition">Contact</a></li>
-              {/* <li><a href="/gallery" className="hover:text-yellow-400 transition">Gallery</a></li> */}
-              <li><a href="/register" className="hover:text-yellow-400 transition">Enroll</a></li>
-              <li><a href="/result" className="hover:text-yellow-400 transition">Result</a></li>
-              <li><a href="/privacy-policy" className="hover:text-yellow-400 transition">Privacy Policy</a></li>
-              <li><a href="/terms-and-conditions" className="hover:text-yellow-400 transition">Terms & Conditions</a></li>
-              <li><a href="/refund-cancellation-policy" className="hover:text-yellow-400 transition">Refund Policy</a></li>
-            </ul>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-base">
+              <a href="/about" className="hover:text-yellow-400 transition">About</a>
+              <a href="/register" className="hover:text-yellow-400 transition">Enroll</a>
+              <a href="/courses" className="hover:text-yellow-400 transition">Courses</a>
+              <a href="/result" className="hover:text-yellow-400 transition">Result</a>
+              <a href="/contact" className="hover:text-yellow-400 transition">Contact</a>
+              <a href="/faq" className="hover:text-yellow-400 transition">FAQ</a>
+              <a href="/privacy-policy" className="hover:text-yellow-400 transition">Privacy Policy</a>
+              <a href="/terms-and-conditions" className="hover:text-yellow-400 transition">Terms & Conditions</a>
+            </div>
+            <div className="mt-2 text-base">
+              <a href="/refund-cancellation-policy" className="hover:text-yellow-400 transition">Refund Policy</a>
+            </div>
           </div>
 
           {/* Contact */}
@@ -43,6 +45,7 @@ export default function Footer() {
           <p className="text-sm">Address: Parsa Road, Sitalpur, Saran, Bihar, India</p>
           <div className="mt-2 text-xs">
             <a href="/about" className="underline mr-2">About</a>
+            <a href="/faq" className="underline mr-2">FAQ</a>
             <a href="/privacy-policy" className="underline mr-2">Privacy</a>
             <a href="/terms-and-conditions" className="underline mr-2">Terms</a>
             <a href="/refund-cancellation-policy" className="underline mr-2">Refund</a>
