@@ -85,7 +85,7 @@ if (!roll) {
       let fakeTimer: ReturnType<typeof setInterval> | null = null;
       let fakeValue = 0;
       let hasFirstChunk = false;
-      const cacheKey = `tse_cert_${result.rollNumber}`;
+      const cacheKey = `tse_cert_${result.rollNumber}_${result.className}`;
       const now = Date.now();
       const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
 
@@ -125,9 +125,9 @@ if (!roll) {
         }, 180);
       };
 
-      const url =
-        result.certificateUrl ||
-        `/api/certificates/tse?roll=${encodeURIComponent(result.rollNumber)}`;
+  const url =
+  result.certificateUrl ||
+  `/api/certificates/tse?roll=${encodeURIComponent(result.rollNumber)}&class=${encodeURIComponent(result.className || className)}`;
       const res = await fetch(url);
       if (!res.ok || !res.body) {
         throw new Error("Certificate download failed");
