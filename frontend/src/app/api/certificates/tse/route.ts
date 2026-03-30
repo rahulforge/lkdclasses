@@ -193,6 +193,8 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const roll = String(searchParams.get("roll") ?? "").trim();
+    const className = String(searchParams.get("class") ?? "").trim();
+
 
     if (!roll) {
       return NextResponse.json(
@@ -201,13 +203,12 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const rows = await supabaseRest.from<any[]>(
-      "tse_results",
-      `roll_number=eq.${encodeURIComponent(
-        roll
-      )}&select=roll_number,student_name,rank,percentage,exam_name,test_date,class&limit=1`,
-      "GET"
-    );
+   
+const rows = await supabaseRest.from<any[]>(
+  "tse_results",
+  `roll_number=eq.${encodeURIComponent(roll)}&class=eq.${encodeURIComponent(className)}&select=roll_number,student_name,rank,percentage,exam_name,test_date,class&limit=1`,
+  "GET"
+);
 
     const row = rows[0];
 
