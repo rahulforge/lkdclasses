@@ -220,10 +220,10 @@ export async function GET(req: NextRequest) {
 
     const classWiseTotals: Record<string, string> = {
       "6": "100",
-      "7": "100",
-      "8": "100",
-      "9": "100",
-      "10": "100",
+      "7": "50",
+      "8": "60",
+      "9": "102",
+      "10": "140",
       "11": "190",
       "12": "140",
     };
